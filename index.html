@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 id="title">Tetris</h1>
+    <div class="game-container">
+        <div class="board grid">
+            <div class="button-gameover">
+                <button class="hidden" id="gameover">Game Over!</button>
+                <button class="hidden" id="play-again">Play Again</button>
+            </div>
+        </div>
+
+        <div class="sidebar-grid">
+            <div class="up-next-outer" id="up-next-box">
+                <h4 id="up-next-text">Up next:</h4>
+                <div class="up-next up-next-grid"></div>
+            </div>
+
+            <div class="score-outer">
+                <h4 class="score" id="score-counter">Score: 0</h4>
+                <h4 class="score" id="lines-cleared-counter">Lines cleared: 0</h4>
+            </div>
+
+            <div class="button button-music buttons-outer" id="music-box">
+                <button id="music">&#127925;</button>
+                <button id="pause">Pause Game</button>
+
+            </div>
+        </div>
+
+        <div class="button-play">
+            <button id="play">Play Tetris</button>
+        </div>
+
+    </div>
+
+    <audio id="themeTune" loop>
+        <source src="Original Tetris theme (Tetris Soundtrack).mp3" type="audio/mp3">
+      </audio> 
+</body>
+</html>
