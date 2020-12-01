@@ -34,7 +34,6 @@ body {
     height: 112px;
     display: flex;
     flex-wrap: wrap;
-    border: 6px solid rgb(219, 219, 223);
 }
 
 #up-next-text {
