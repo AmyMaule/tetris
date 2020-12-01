@@ -343,7 +343,9 @@ let lineCleared = () => {
     const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9];
     if(row.every(index => boardSquares[index].classList.contains("taken"))) {
         row.forEach(index => boardSquares[index].classList.remove("taken", "shape", "l1Shape", "l2Shape", "oShape", "z1Shape", "z2Shape", "kShape", "iShape"));
+        boardSquares.forEach(square => square.classList.remove("endGame"))
         let squaresRemoved = boardSquares.splice(i, width);
+        squaresRemoved.forEach(square => square.classList.add("endGame"))
         boardSquares = squaresRemoved.concat(boardSquares);
         boardSquares.forEach(square => board.appendChild(square));
         score += 100;
