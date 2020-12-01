@@ -1,11 +1,15 @@
 body {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    background-color: rgba(139, 114, 114, 0.74);
+    background-image: url("bg893.jpg");
+    background-size: cover;
+    background-position: center center;
+    min-height: 100%;
 }
 
 #title {
     text-align: center;
     font-size: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .game-container {
@@ -23,7 +27,6 @@ body {
 
 .up-next-outer {
     margin: 0 auto;
-    /* margin here keeps the up next grid centered horizontally */
 }
 
 .up-next {
@@ -51,7 +54,6 @@ body {
 
 .score-outer {
     margin: 0 auto;
-    /* this centers the score and lines cleared */
 }
 
 .score {
@@ -94,7 +96,7 @@ body {
     font-size: 6.5em;
     height: 200px;
     border: 6px solid rgba(6, 31, 31, 0.76);
-    background-color: rgb(54, 64, 73);
+    background-color: rgb(102, 57, 145);
     border-radius: 15px;
     padding: 5px 10px;
     color: rgb(248, 230, 230);
@@ -104,7 +106,7 @@ body {
 
 #play:hover {
     border-color: rgb(77, 50, 50);
-    background-color: rgb(107, 122, 136);
+    background-color: rgb(134, 96, 175);
 }
 
 .hidden {
@@ -112,7 +114,6 @@ body {
 }
 
 #play:active {
-    background-color: rgb(133, 127, 145);
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
@@ -156,69 +157,108 @@ body {
 }
 
 .l1Shape {
-    background-color: #7793f1;
+    background-color: #8377f1;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .l2Shape {
-    background-color: #34f0d0da;
+    background-color: #0bcad8da;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .oShape {
     background-color: #49e25d;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .z1Shape {
     background-color: #fa6daf;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .z2Shape {
-    background-color: #c7e630;
+    background-color: #e0dd14;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .kShape {
-    background-color: #ffb52b;
+    background-color: #faa609;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
 }
 
 .iShape {
     background-color: #c68ffa;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px outset rgb(221, 221, 224);
+}
+
+.no-grid {
+    box-sizing: unset;
+    -moz-box-sizing: unset;
+    -webkit-box-sizing: unset;
+    border: none;
 }
 
 .button-gameover {
     position: absolute;
-    margin-top: 2em;
 }
 
 #gameover {
     font-family: "Impact";
-    font-size: 3em;
+    font-size: 2.5em;
     height: 80px;
     width: 250px;
     border: none;
-    background-color: rgba(147, 150, 151, 0.76);
+    background-color: rgba(125, 167, 180, 0.199);
     border-radius: 3px;
     color: rgb(49, 41, 41);
     margin-bottom: 50px;
 }
 
+#gameover:hover {
+    background-color: rgba(147, 150, 151, 0);
+    font-size: 0em;
+}
+
 #play-again {
     font-family: "Impact";
-    font-size: 3.3em;
-    height: 150px;
+    font-size: 3em;
+    height: 90px;
     width: 250px;
+    margin-top: 1em;
     border: none;
-    background-color: rgba(147, 150, 151, 0.76);
-    border-radius: 15px;
+    background-color: rgba(68, 179, 216, 0.795);
+    border-radius: 5px;
     padding: 5px 10px;
     color: rgb(49, 41, 41);
     cursor: pointer;
 }
 
 #play-again:hover {
-    background-color: rgba(221, 221, 224, 0.733);
+    background-color: rgba(68, 179, 216, 0.452);
 }
 
 #play-again:active {
-    background-color: rgba(92, 92, 92, 0.589);
-    box-shadow: 0 5px #666;
+    background-color: rgba(68, 179, 216, 0.452);
     transform: translateY(4px);
   }

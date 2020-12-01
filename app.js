@@ -2,6 +2,7 @@ const board = document.querySelector(".board");
 const upNextGrid = document.querySelector(".up-next-grid");
 const scoreCounter = document.querySelector("#score-counter");
 const linesClearedCounterBox = document.querySelector("#lines-cleared-counter");
+const highScoreCounter = document.querySelector("#high-score-counter");
 const playButton = document.querySelector("#play");
 const gameOverButton = document.querySelector("#gameover");
 const playAgainButton = document.querySelector("#play-again");
@@ -16,6 +17,26 @@ let timerId;
 let score = 0;
 let linesCleared = 0;
 let upNextWidth = 8;
+const isStorage = "undefined" !== typeof localStorage;
+let highScore;
+
+document.addEventListener("keydown", function(e) {
+    e.preventDefault();
+});
+
+if (isStorage && JSON.parse(localStorage.getItem("highScore"))) {
+    highScore = (JSON.parse(localStorage.getItem("highScore")));
+    highScoreCounter.innerHTML = `High Score: <br> ${highScore}`;
+    } else if(JSON.parse(localStorage.getItem("highScore")) == null) {
+        highScore = 0;
+        highScoreCounter.innerHTML = `High Score: <br> 0`;
+}
+
+function saveScore(highScore) {
+    if (highScore > (JSON.parse(localStorage.getItem("highScore")))) {
+        localStorage.setItem("highScore", JSON.stringify(highScore));
+    }
+}
 
 let createBoard = squares => {
     for (let i = 0; i < width * height; i++) {
@@ -90,10 +111,10 @@ let kShape = [
 ];
 
 let iShape = [
-    [width, width+1, width+2, width+3],
     [1, width+1, width*2+1, width*3+1],
-    [width, width+1, width+2, width+3],
-    [1, width+1, width*2+1, width*3+1]
+    [width*3, width*3+1, width*3+2, width*3+3],
+    [1, width+1, width*2+1, width*3+1],
+    [width*3, width*3+1, width*3+2, width*3+3]
 ];
 
 let allShapes = [l1Shape, l2Shape, oShape, z1Shape, z2Shape, kShape, iShape];
@@ -142,7 +163,6 @@ let stopDrop = () => {
             clearInterval(intervalDrop);
             intervalDrop = null;
             lineCleared();
-        //get new shape dropping
             randomNumber = nextRandomNumber;
             nextRandomNumber = Math.floor(Math.random() * allShapes.length);
             currentShape = allShapes[randomNumber][0];
@@ -183,23 +203,23 @@ document.addEventListener('keydown', arrowPress);
 
 let leftPress = () => {
     unDrawShape();
-    const isAtLeftEdge = currentShape.some(index => {
+    const atLeftEdge = currentShape.some(index => {
          return (currentPosition + index) % width === 0; 
     });
-    if(!isAtLeftEdge) currentPosition -=1;
+    if(!atLeftEdge) currentPosition -=1;
     if (currentShape.some(index => boardSquares[currentPosition + index].classList.contains("taken"))) currentPosition +=1;
     drawShape();
   };
 
-  let rightPress = () => {
+let rightPress = () => {
     unDrawShape();
-    const isAtRightEdge = currentShape.some(index => {
+    const atRightEdge = currentShape.some(index => {
         return (currentPosition + index) % width === 9;
     });
-    if(!isAtRightEdge) currentPosition +=1;
+    if(!atRightEdge) currentPosition +=1;
     if (currentShape.some(index => boardSquares[currentPosition + index].classList.contains("taken"))) currentPosition -=1;
     drawShape();
-  };
+};
 
     
 let isAtLeft = () => {
@@ -210,37 +230,34 @@ let isAtRight = () => {
     return currentShape.some(index => (currentPosition + index) % width === 9);
 };
   
-let checkEdgesAtRotation = p => {
-  p = p || currentPosition;
-  if ((p+1) % width < 4) {  //using p and width < 5 still allows it to go over the edge
-    if (isAtRight()) {
-      currentPosition += 1;
-      checkEdgesAtRotation(p);
-      }
-  }
-  else if (p % width > 5) {
-    if (isAtLeft()) {
-      currentPosition -= 1;
-      checkEdgesAtRotation(p);
+let checkEdges = position => {
+    position = position || currentPosition;
+        if ((position + 1) % width < 4) {  //using position % width < 5 still allows it to go over the edge
+            if (isAtRight()) {
+            currentPosition += 1;
+            checkEdges(position);
+            }
+        } else if (position % width > 5) {
+            if (isAtLeft()) {
+        currentPosition -= 1;
+        checkEdges(position);
+        }
     }
-  }
 };
 
 let rotate = () => {
     if (randomNumber === 2) return;    
     unDrawShape();
- 
     if (currentRotation === 3) {
         currentRotation = 0;
     } else {
         currentRotation++;
     }
     currentShape = allShapes[randomNumber][currentRotation];
-    checkEdgesAtRotation();
+    checkEdges();
     drawShape();
     stopDrop();
 };
-
 
 let upNext = () => {
     upNextSquares.forEach(square => {
@@ -248,25 +265,25 @@ let upNext = () => {
     });
     upNextShape[nextRandomNumber].forEach(index => {
         if (nextRandomNumber === 0) {
-            upNextSquares[index].classList.add("l1Shape");
+            upNextSquares[index].classList.add("l1Shape", "no-grid");
         }
         if (nextRandomNumber === 1) {
-            upNextSquares[index].classList.add("l2Shape");
+            upNextSquares[index].classList.add("l2Shape", "no-grid");
         }
         if (nextRandomNumber === 2) {
-            upNextSquares[index].classList.add("oShape");
+            upNextSquares[index].classList.add("oShape", "no-grid");
         }
         if (nextRandomNumber === 3) {
-            upNextSquares[index].classList.add("z1Shape");
+            upNextSquares[index].classList.add("z1Shape", "no-grid");
         }
         if (nextRandomNumber === 4) {
-            upNextSquares[index].classList.add("z2Shape");
+            upNextSquares[index].classList.add("z2Shape", "no-grid");
         }
         if (nextRandomNumber === 5) {
-            upNextSquares[index].classList.add("kShape");
+            upNextSquares[index].classList.add("kShape", "no-grid");
         }
         if (nextRandomNumber === 6) {
-            upNextSquares[index].classList.add("iShape");
+            upNextSquares[index].classList.add("iShape", "no-grid");
         }
     });
 };
@@ -287,7 +304,7 @@ let startGame = () => {
     playButton.classList.add("hidden");
     drawShape();
     intervalDrop = setInterval(dropShape, 800);
-    nextRandomNumber = Math.floor(Math.random()*allShapes.length);
+    nextRandomNumber = Math.floor(Math.random() * allShapes.length);
     upNext();
 };
 
@@ -330,9 +347,12 @@ let lineCleared = () => {
         boardSquares = squaresRemoved.concat(boardSquares);
         boardSquares.forEach(square => board.appendChild(square));
         score += 100;
-        scoreCounter.innerText = "Score: " + score;
+        if (highScore == score - 100) highScore += 100;
+        scoreCounter.innerText = `Score: ${score}`;
+        highScoreCounter.innerHTML = `High Score: <br> ${highScore}`;
         linesCleared++;
         linesClearedCounterBox.innerText = "Lines Cleared: " + linesCleared;
+        saveScore(highScore);
         }
     }
 };
@@ -340,6 +360,7 @@ let lineCleared = () => {
 let endGame = () => {
     for (let i=0; i<boardSquares.length; i++) {
         if (boardSquares[i].classList.contains("endGame") && boardSquares[i].classList.contains("taken")) {
+            saveScore(highScore);
             clearInterval(intervalDrop);
             gameOverButton.classList.remove("hidden");
             playAgainButton.classList.remove("hidden");
