@@ -156,12 +156,19 @@ let unDrawShape = () => {
 };
 
 let stopDrop = () => {
+    // if (!currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
+    //     clearInterval(intervalDrop);
+    //     intervalDrop = setInterval(dropShape, 1800);
+    //     dropShape();
+    // }
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
+        // clearTimeout(stopDrop)
+        // debugger;
         currentShape.forEach(index => boardSquares[currentPosition + index].classList.add("taken"));
         if (endGame()) return;
         else {
             clearInterval(intervalDrop);
-            intervalDrop = null;
+            // intervalDrop = null;
             lineCleared();
         //get new shape dropping
             randomNumber = nextRandomNumber;
@@ -183,6 +190,7 @@ let dropShape = () => {
     unDrawShape();
     currentPosition+=10;
     drawShape();
+    // if statement below is not being recognised when sliding into a gap
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
         clearInterval(intervalDrop);
         setTimeout(stopDrop, 800);
@@ -203,6 +211,11 @@ let arrowPress = e => {
 document.addEventListener('keydown', arrowPress);
 
 let leftPress = () => {
+    // debugger;
+    if (currentShape.some(index => boardSquares[currentPosition + index + width - 1].classList.contains("taken", "shape"))) {
+        clearInterval(intervalDrop);
+        setTimeout(stopDrop, 800);
+    }
     unDrawShape();
     const atLeftEdge = currentShape.some(index => {
          return (currentPosition + index) % width === 0; 
@@ -213,6 +226,10 @@ let leftPress = () => {
   };
 
   let rightPress = () => {
+    if (currentShape.some(index => boardSquares[currentPosition + index + width + 1].classList.contains("taken", "shape"))) {
+        clearInterval(intervalDrop);
+        setTimeout(stopDrop, 800);
+    }
     unDrawShape();
     const atRightEdge = currentShape.some(index => {
         return (currentPosition + index) % width === 9;
