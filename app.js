@@ -157,6 +157,7 @@ let unDrawShape = () => {
 
 let stopDrop = () => {
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
+        // clearInterval(intervalDrop);
         currentShape.forEach(index => boardSquares[currentPosition + index].classList.add("taken"));
         if (endGame()) return;
         else {
@@ -327,11 +328,13 @@ playAgainButton.addEventListener("click", function() {
 pauseButton.addEventListener("click", function() {
     if (playButton.classList.contains("hidden")) {
     if (timerId) {
+        document.addEventListener('keydown', arrowPress);
         intervalDrop = setInterval(dropShape, 800);
         pauseButton.innerHTML = "Pause Game";
         timerId = 0;
     } else {
         clearInterval(intervalDrop);
+        document.removeEventListener('keydown', arrowPress);
         pauseButton.innerHTML = "Resume";
         timerId = 1;
         }
