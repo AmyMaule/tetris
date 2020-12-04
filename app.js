@@ -157,13 +157,13 @@ let unDrawShape = () => {
 
 let stopDrop = () => {
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
-        // clearInterval(intervalDrop);
         currentShape.forEach(index => boardSquares[currentPosition + index].classList.add("taken"));
         if (endGame()) return;
         else {
             clearInterval(intervalDrop);
             intervalDrop = null;
             lineCleared();
+        //get new shape dropping
             randomNumber = nextRandomNumber;
             nextRandomNumber = Math.floor(Math.random() * allShapes.length);
             currentShape = allShapes[randomNumber][0];
@@ -212,7 +212,7 @@ let leftPress = () => {
     drawShape();
   };
 
-let rightPress = () => {
+  let rightPress = () => {
     unDrawShape();
     const atRightEdge = currentShape.some(index => {
         return (currentPosition + index) % width === 9;
@@ -220,7 +220,7 @@ let rightPress = () => {
     if(!atRightEdge) currentPosition +=1;
     if (currentShape.some(index => boardSquares[currentPosition + index].classList.contains("taken"))) currentPosition -=1;
     drawShape();
-};
+  };
 
     
 let isAtLeft = () => {
@@ -232,18 +232,19 @@ let isAtRight = () => {
 };
   
 let checkEdges = position => {
-    position = position || currentPosition;
-        if ((position + 1) % width < 4) {  //using position % width < 5 still allows it to go over the edge
-            if (isAtRight()) {
-            currentPosition += 1;
-            checkEdges(position);
-            }
-        } else if (position % width > 5) {
-            if (isAtLeft()) {
-        currentPosition -= 1;
-        checkEdges(position);
-        }
+  position = position || currentPosition;
+  if ((position + 1) % width < 4) {  //using position % width < 5 still allows it to go over the edge
+    if (isAtRight()) {
+      currentPosition += 1;
+      checkEdges(position);
+      }
+  }
+  else if (position % width > 5) {
+    if (isAtLeft()) {
+      currentPosition -= 1;
+      checkEdges(position);
     }
+  }
 };
 
 let rotate = () => {
@@ -259,6 +260,7 @@ let rotate = () => {
     drawShape();
     stopDrop();
 };
+
 
 let upNext = () => {
     upNextSquares.forEach(square => {
@@ -328,13 +330,11 @@ playAgainButton.addEventListener("click", function() {
 pauseButton.addEventListener("click", function() {
     if (playButton.classList.contains("hidden")) {
     if (timerId) {
-        document.addEventListener('keydown', arrowPress);
         intervalDrop = setInterval(dropShape, 800);
         pauseButton.innerHTML = "Pause Game";
         timerId = 0;
     } else {
         clearInterval(intervalDrop);
-        document.removeEventListener('keydown', arrowPress);
         pauseButton.innerHTML = "Resume";
         timerId = 1;
         }
@@ -346,9 +346,7 @@ let lineCleared = () => {
     const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9];
     if(row.every(index => boardSquares[index].classList.contains("taken"))) {
         row.forEach(index => boardSquares[index].classList.remove("taken", "shape", "l1Shape", "l2Shape", "oShape", "z1Shape", "z2Shape", "kShape", "iShape"));
-        boardSquares.forEach(square => square.classList.remove("endGame"))
         let squaresRemoved = boardSquares.splice(i, width);
-        squaresRemoved.forEach(square => square.classList.add("endGame"))
         boardSquares = squaresRemoved.concat(boardSquares);
         boardSquares.forEach(square => board.appendChild(square));
         score += 100;
