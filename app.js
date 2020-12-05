@@ -365,6 +365,8 @@ let lineCleared = () => {
         row.forEach(index => boardSquares[index].classList.remove("taken", "shape", "l1Shape", "l2Shape", "oShape", "z1Shape", "z2Shape", "kShape", "iShape"));
         let squaresRemoved = boardSquares.splice(i, width);
         boardSquares = squaresRemoved.concat(boardSquares);
+        boardSquares.forEach(square => square.classList.remove("endGame"));
+        squaresRemoved.forEach(square => square.classList.add("endGame"));
         boardSquares.forEach(square => board.appendChild(square));
         score += 100;
         if (highScore == score - 100) highScore += 100;
