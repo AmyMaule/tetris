@@ -199,10 +199,10 @@ let dropShape = () => {
 
 let arrowPress = e => {
     let arrowDirection = e.keyCode;
-    if (arrowDirection === 37) leftPress();
-    if (arrowDirection === 38) rotate();
-    if (arrowDirection === 39) rightPress();
-    if (arrowDirection === 40) {
+    if (arrowDirection === 37 || arrowDirection === 65) leftPress();
+    if (arrowDirection === 38 || arrowDirection === 87) rotate();
+    if (arrowDirection === 39 || arrowDirection === 68) rightPress();
+    if (arrowDirection === 40 || arrowDirection === 83) {
         if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) return;
         else dropShape();
     }
