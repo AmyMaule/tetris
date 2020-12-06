@@ -1,3 +1,6 @@
+// double drop glitch
+
+
 const board = document.querySelector(".board");
 const upNextGrid = document.querySelector(".up-next-grid");
 const scoreCounter = document.querySelector("#score-counter");
@@ -104,10 +107,10 @@ let z2Shape = [
 ];
 
 let kShape = [
-    [0, 1, 2, width+1],
-    [2, width+1, width+2, width*2+2],
-    [width+1, width*2, width*2+1, width*2+2],
-    [0, width, width*2, width+1]
+    [width, width+1, width+2, width*2+1],
+    [1, width, width+1, width*2+1],
+    [1, width, width+1, width+2],
+    [1, width+1, width+2, width*2+1]
 ];
 
 let iShape = [
@@ -156,14 +159,13 @@ let unDrawShape = () => {
 };
 
 let stopDrop = () => {
-    // if (!currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
-    //     clearInterval(intervalDrop);
-    //     intervalDrop = setInterval(dropShape, 1800);
-    //     dropShape();
-    // }
+    if (!currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
+        clearInterval(intervalDrop);
+        intervalDrop = setInterval(dropShape, 800);
+        dropShape();
+    }
+    debugger;
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
-        // clearTimeout(stopDrop)
-        // debugger;
         currentShape.forEach(index => boardSquares[currentPosition + index].classList.add("taken"));
         if (endGame()) return;
         else {
@@ -190,7 +192,6 @@ let dropShape = () => {
     unDrawShape();
     currentPosition+=10;
     drawShape();
-    // if statement below is not being recognised when sliding into a gap
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
         clearInterval(intervalDrop);
         setTimeout(stopDrop, 800);
@@ -267,15 +268,31 @@ let checkEdges = position => {
 let rotate = () => {
     if (randomNumber === 2) return;    
     unDrawShape();
+    // console.log(currentRotation)
     if (currentRotation === 3) {
         currentRotation = 0;
     } else {
         currentRotation++;
     }
-    currentShape = allShapes[randomNumber][currentRotation];
+    // console.log(currentRotation)
     checkEdges();
+    currentShape = allShapes[randomNumber][currentRotation];
+    // currentShape.some(index => console.log(boardSquares[currentPosition + index]));
+    if (currentShape.some(index => boardSquares[currentPosition + index].classList.contains("taken", "shape"))) {
+        console.log("didnt rotate")
+        if (currentRotation === 0) {
+            currentRotation = 3;
+        } else {
+            currentRotation--;
+        }
+    }    currentShape = allShapes[randomNumber][currentRotation];
+
     drawShape();
-    stopDrop();
+    if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
+        // console.log("fave 800")
+        clearInterval(intervalDrop);
+        setTimeout(stopDrop, 800);
+    }
 };
 
 
