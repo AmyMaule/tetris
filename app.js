@@ -51,7 +51,7 @@ let createBoard = squares => {
         if (i > 199) {
             square.classList.add("taken");
         }
-        if (i >12 && i<17) {
+        if (i >=0 && i<10) {
             square.classList.add("endGame");
         }
     }
