@@ -164,15 +164,12 @@ let stopDrop = () => {
         intervalDrop = setInterval(dropShape, 800);
         dropShape();
     }
-    debugger;
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
         currentShape.forEach(index => boardSquares[currentPosition + index].classList.add("taken"));
         if (endGame()) return;
         else {
             clearInterval(intervalDrop);
-            // intervalDrop = null;
             lineCleared();
-        //get new shape dropping
             randomNumber = nextRandomNumber;
             nextRandomNumber = Math.floor(Math.random() * allShapes.length);
             currentShape = allShapes[randomNumber][0];
@@ -212,7 +209,6 @@ let arrowPress = e => {
 document.addEventListener('keydown', arrowPress);
 
 let leftPress = () => {
-    // debugger;
     if (currentShape.some(index => boardSquares[currentPosition + index + width - 1].classList.contains("taken", "shape"))) {
         clearInterval(intervalDrop);
         setTimeout(stopDrop, 800);
@@ -250,46 +246,39 @@ let isAtRight = () => {
 };
   
 let checkEdges = position => {
-  position = position || currentPosition;
-  if ((position + 1) % width < 4) {  //using position % width < 5 still allows it to go over the edge
-    if (isAtRight()) {
-      currentPosition += 1;
-      checkEdges(position);
+    position = position || currentPosition;
+    if ((position + 1) % width < 4) {  //using position % width < 5 still allows it to go over the edge
+        if (isAtRight()) {
+            currentPosition += 1;
+            checkEdges(position);
       }
-  }
-  else if (position % width > 5) {
-    if (isAtLeft()) {
-      currentPosition -= 1;
-      checkEdges(position);
-    }
+  } else if (position % width > 5) {
+        if (isAtLeft()) {
+            currentPosition -= 1;
+            checkEdges(position);
+        }
   }
 };
 
 let rotate = () => {
     if (randomNumber === 2) return;    
     unDrawShape();
-    // console.log(currentRotation)
     if (currentRotation === 3) {
         currentRotation = 0;
     } else {
         currentRotation++;
     }
-    // console.log(currentRotation)
-    checkEdges();
     currentShape = allShapes[randomNumber][currentRotation];
-    // currentShape.some(index => console.log(boardSquares[currentPosition + index]));
+    checkEdges();
     if (currentShape.some(index => boardSquares[currentPosition + index].classList.contains("taken", "shape"))) {
-        console.log("didnt rotate")
         if (currentRotation === 0) {
             currentRotation = 3;
         } else {
             currentRotation--;
         }
     }    currentShape = allShapes[randomNumber][currentRotation];
-
     drawShape();
     if (currentShape.some(index => boardSquares[currentPosition + index + width].classList.contains("taken", "shape"))) {
-        // console.log("fave 800")
         clearInterval(intervalDrop);
         setTimeout(stopDrop, 800);
     }
